@@ -74,6 +74,42 @@ exports.addSample = async (req, res) => {
   }
 }
 
+exports.updateSample = async (req, res) => {
+  try {
+    const sampleId = req.params.id;
+    let { title, author, publishYear } = req.body
+
+    const sample = await Sample.findByIdAndUpdate(
+      sampleId,
+      {
+        $set: { title, author, publishYear }
+      },
+      {
+        new: true,
+        timestamps: true,
+      }
+    );
+
+    if (!req.body) {
+      return res.status(400).send({
+        message: 'Send all required fields: title, author, publishYear'
+      })
+    }
+
+    console.log(`${req.method} request successful`);
+    res.status(200).send({
+      message: 'Update successful',
+      content: sample
+    });
+
+  } catch (error) {
+
+    console.error(error.message);
+    res.status(500).send('Server error');
+
+  }
+}
+
 exports.deleteSample = async (req, res) => {
   try {
 

@@ -3,9 +3,16 @@ const router = express.Router();
 
 const samplesController = require('../controllers/sampleController')
 
-router.get('/', samplesController.getSample)
-router.get('/:id', samplesController.getSampleById)
-router.post('/', samplesController.addSample)
-router.delete('/:id', samplesController.deleteSample)
+// route for general request
+router.route('/')
+  .get(samplesController.getSample)
+  .post(samplesController.addSample)
+
+// routes for specific requests with id
+router.route('/:id')
+  .get(samplesController.getSampleById)
+  .put(samplesController.updateSample)
+  .delete(samplesController.deleteSample)
+
 
 module.exports = router
